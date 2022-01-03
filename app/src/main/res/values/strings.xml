@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">TicTacToe</string>
     <string name="no_login">No Login</string>
+
+    <string name="login_notice">Log to play</string>
+    <string name="easy">Easy</string>
+    <string name="hard">Hard</string>
+    <string name="p1vsp2">P1 vs P2</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="reset">Reset</string>
+    <string name="draw">Draw</string>
+    <string name="friend">Friend</string>
+    <string name="total">Total</string>
+    <string name="win">Win</string>
+    <string name="lose">Lose</string>
+    <string name="win_percentage">Win %</string>
+    <string name="statistics">Statistics</string>
+    <string name="settings">Settings</string>
+    <string name="change_user_name">Change username</string>
+    <string name="user_name">User Name:</string>
+    <string name="email">Email:</string>
+
 </resources>
