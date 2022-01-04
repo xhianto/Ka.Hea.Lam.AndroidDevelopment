@@ -19,5 +19,7 @@
     <string name="change_user_name">Change username</string>
     <string name="user_name">User Name:</string>
     <string name="email">Email:</string>
-
+    <string name="login">Log In</string>
+    <string name="register">Register</string>
+    <string name="password">Password:</string>
 </resources>

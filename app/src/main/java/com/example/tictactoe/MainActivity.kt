@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var buttonEasy: Button
     lateinit var buttonHard: Button
     lateinit var buttonP1vsP2: Button
+    lateinit var buttonLogin: Button
+    lateinit var buttonRegister: Button
     lateinit var user: User
 
     private var launchLoginActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -54,10 +56,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonHard.setOnClickListener(this)
         buttonP1vsP2 = findViewById(R.id.p1vsp2)
         buttonP1vsP2.setOnClickListener(this)
+        buttonLogin = findViewById(R.id.login)
+        buttonLogin.setOnClickListener(this)
+        buttonRegister = findViewById(R.id.Register)
+        buttonRegister.setOnClickListener(this)
         settingsImageButton = findViewById(R.id.settingsButton)
         settingsImageButton.setOnClickListener(this)
-        textLoginNotice = findViewById(R.id.TextLoginNotice)
-        textLoginNotice.text = getString(R.string.no_login)
+        //textLoginNotice = findViewById(R.id.TextLoginNotice)
+        //textLoginNotice.text = getString(R.string.login_notice)
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -88,7 +94,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            user = User(-1, account.displayName, account.email)
+            val dbService = DataBaseService(this@MainActivity)
+            user = dbService.getUserByEmail(account.email.toString())
+            if (user.emailAddress == null) {
+                user = User(-1, account.displayName, account.email)
+                dbService.addUser(user)
+                Toast.makeText(this@MainActivity, "New User Added", Toast.LENGTH_LONG).show()
+            }
             buttonSignIn.visibility = View.INVISIBLE
             textLoginNotice.visibility = View.INVISIBLE
             buttonEasy.visibility = View.VISIBLE
@@ -98,13 +110,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             settingsImageButton.visibility = View.VISIBLE
             // Signed in successfully, show authenticated UI.
             //updateUI(account)
-            textLoginNotice.text = account.displayName
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             //Log.w(TAG, "signInResult:failed code=" + e.statusCode)
             //updateUI(null)
-            textLoginNotice.text = e.statusCode.toString()
         }
     }
 
@@ -124,9 +134,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {
+        val intentLogin = Intent(this@MainActivity, LoginRegisterActivity::class.java)
         when (v.id) {
             R.id.sign_in_button -> signIn()
             R.id.signout -> signOut()
+            R.id.login -> {
+                intentLogin.putExtra("mode", "login")
+                startActivity(intentLogin)
+            }
+            R.id.Register -> {
+                intentLogin.putExtra("mode", "register")
+                startActivity(intentLogin)
+            }
         }
     }
+
 }
