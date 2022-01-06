@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var mGoogleSignInClient: GoogleSignInClient
     lateinit var buttonSignIn: SignInButton
-    lateinit var textLoginNotice: TextView
     lateinit var settingsImageButton: ImageButton
     lateinit var buttonSignOut: Button
     lateinit var buttonEasy: Button
@@ -40,6 +39,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val task: Task<GoogleSignInAccount> = GoogleSignIn.getSignedInAccountFromIntent(data)
             handleSignInResult(task)
         }
+    }
+
+    private var getLoginRegisterResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            user = result.data?.getSerializableExtra("user") as User
+            gameButtons()
+        }
+        else
+            signInOutButtons()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,8 +70,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonRegister.setOnClickListener(this)
         settingsImageButton = findViewById(R.id.settingsButton)
         settingsImageButton.setOnClickListener(this)
-        //textLoginNotice = findViewById(R.id.TextLoginNotice)
-        //textLoginNotice.text = getString(R.string.login_notice)
 
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -76,19 +82,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
-    override fun onStart() {
+    /*override fun onStart() {
         super.onStart()
 
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
         GoogleSignIn.getLastSignedInAccount(this)
         signIn()
-    }
+    }*/
 
-    private fun signIn() {
+    private fun googleSignIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
         launchLoginActivity.launch(signInIntent)
-        //startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
@@ -97,17 +102,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val dbService = DataBaseService(this@MainActivity)
             user = dbService.getUserByEmail(account.email.toString())
             if (user.emailAddress == null) {
-                user = User(-1, account.displayName, account.email)
-                dbService.addUser(user)
-                Toast.makeText(this@MainActivity, "New User Added", Toast.LENGTH_LONG).show()
+                val intentLogin = Intent(this@MainActivity, LoginRegisterActivity::class.java)
+                intentLogin.putExtra("mode", "googleRegister")
+                intentLogin.putExtra("username", account.displayName)
+                intentLogin.putExtra("email", account.email)
+                getLoginRegisterResult.launch(intentLogin)
             }
-            buttonSignIn.visibility = View.INVISIBLE
-            textLoginNotice.visibility = View.INVISIBLE
-            buttonEasy.visibility = View.VISIBLE
-            buttonHard.visibility = View.VISIBLE
-            buttonP1vsP2.visibility = View.VISIBLE
-            buttonSignOut.visibility = View.VISIBLE
-            settingsImageButton.visibility = View.VISIBLE
+            gameButtons()
             // Signed in successfully, show authenticated UI.
             //updateUI(account)
         } catch (e: ApiException) {
@@ -121,32 +122,43 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun signOut() {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this) {
-                buttonSignIn.visibility = View.VISIBLE
-                textLoginNotice.visibility = View.VISIBLE
-                buttonEasy.visibility = View.INVISIBLE
-                buttonHard.visibility = View.INVISIBLE
-                buttonP1vsP2.visibility = View.INVISIBLE
-                buttonSignOut.visibility = View.INVISIBLE
-                settingsImageButton.visibility = View.INVISIBLE
-                Toast.makeText(this@MainActivity, "Signed Out Successfully", Toast.LENGTH_LONG)
-                    .show()
+                signInOutButtons()
+                Toast.makeText(this@MainActivity, "Signed Out Successfully", Toast.LENGTH_LONG).show()
             }
     }
 
     override fun onClick(v: View) {
         val intentLogin = Intent(this@MainActivity, LoginRegisterActivity::class.java)
         when (v.id) {
-            R.id.sign_in_button -> signIn()
+            R.id.sign_in_button -> googleSignIn()
             R.id.signout -> signOut()
             R.id.login -> {
                 intentLogin.putExtra("mode", "login")
-                startActivity(intentLogin)
+                getLoginRegisterResult.launch(intentLogin)
             }
             R.id.Register -> {
                 intentLogin.putExtra("mode", "register")
-                startActivity(intentLogin)
+                getLoginRegisterResult.launch(intentLogin)
             }
         }
+    }
+
+    private fun gameButtons() {
+        buttonSignIn.visibility = View.INVISIBLE
+        buttonEasy.visibility = View.VISIBLE
+        buttonHard.visibility = View.VISIBLE
+        buttonP1vsP2.visibility = View.VISIBLE
+        buttonSignOut.visibility = View.VISIBLE
+        settingsImageButton.visibility = View.VISIBLE
+    }
+
+    private fun signInOutButtons() {
+        buttonSignIn.visibility = View.VISIBLE
+        buttonEasy.visibility = View.INVISIBLE
+        buttonHard.visibility = View.INVISIBLE
+        buttonP1vsP2.visibility = View.INVISIBLE
+        buttonSignOut.visibility = View.INVISIBLE
+        settingsImageButton.visibility = View.INVISIBLE
     }
 
 }

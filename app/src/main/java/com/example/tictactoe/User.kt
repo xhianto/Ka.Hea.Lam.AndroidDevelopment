@@ -6,6 +6,7 @@ class User : Serializable {
     var userId = 0
     var username: String? = null
     var emailAddress: String? = null
+    var password: String? = null
     var easyWin = 0
     var easyDraw = 0
     var easyLose = 0
@@ -16,10 +17,11 @@ class User : Serializable {
     var friendDraw = 0
     var friendLose = 0
 
-    constructor(userId: Int, username: String?, emailAddress: String?) {
+    constructor(userId: Int, username: String?, emailAddress: String?, password: String?) {
         this.userId = userId
         this.username = username
         this.emailAddress = emailAddress
+        this.password = password
         easyWin = 0
         easyDraw = 0
         easyLose = 0
