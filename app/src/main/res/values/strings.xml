@@ -22,4 +22,14 @@
     <string name="login">Log In</string>
     <string name="register">Register</string>
     <string name="password">Password:</string>
+    <string name="game_frame">Game Frame</string>
+    <string name="pos00">Pos00</string>
+    <string name="pos01">Pos01</string>
+    <string name="pos02">Pos02</string>
+    <string name="pos10">Pos10</string>
+    <string name="pos11">Pos11</string>
+    <string name="pos12">Pos12</string>
+    <string name="pos20">Pos20</string>
+    <string name="pos21">Pos21</string>
+    <string name="pos22">Pos22</string>
 </resources>
