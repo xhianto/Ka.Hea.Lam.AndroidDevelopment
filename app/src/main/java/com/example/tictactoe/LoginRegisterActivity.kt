@@ -11,17 +11,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 
 class LoginRegisterActivity : AppCompatActivity() {
-    lateinit var mode: String
-    lateinit var username: String
-    lateinit var email: String
-    lateinit var editUsername: EditText
-    lateinit var editEmail: EditText
-    lateinit var editPassword: EditText
-    lateinit var editRepeatPassword: EditText
-    lateinit var textUsername: TextView
-    lateinit var textTitle: TextView
-    lateinit var buttonSubmit: Button
-    lateinit var user: User
+    private lateinit var mode: String
+    private lateinit var username: String
+    private lateinit var email: String
+    private lateinit var editUsername: EditText
+    private lateinit var editEmail: EditText
+    private lateinit var editPassword: EditText
+    private lateinit var editRepeatPassword: EditText
+    private lateinit var textUsername: TextView
+    private lateinit var textTitle: TextView
+    private lateinit var buttonSubmit: Button
+    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,12 +76,10 @@ class LoginRegisterActivity : AppCompatActivity() {
                 val dbService = DataBaseService(this@LoginRegisterActivity)
                 user = dbService.getUserByEmail(editEmail.text.toString())
                 if (mode == "login") {
-                    if (user.emailAddress == null)
-                        Toast.makeText(this@LoginRegisterActivity, "User nog found", Toast.LENGTH_LONG).show()
-                    else if (editPassword.text.toString() != user.password)
-                        Toast.makeText(this@LoginRegisterActivity, "Wrong password", Toast.LENGTH_LONG).show()
-                    else {
-                        loginUser()
+                    when {
+                        user.emailAddress == null -> Toast.makeText(this@LoginRegisterActivity, "User nog found", Toast.LENGTH_LONG).show()
+                        editPassword.text.toString() != user.password -> Toast.makeText(this@LoginRegisterActivity, "Wrong password", Toast.LENGTH_LONG).show()
+                        else -> loginUser()
                     }
                 }
                 else {

@@ -20,16 +20,16 @@ import com.google.android.gms.common.SignInButton
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    lateinit var mGoogleSignInClient: GoogleSignInClient
-    lateinit var buttonSignIn: SignInButton
-    lateinit var settingsImageButton: ImageButton
-    lateinit var buttonSignOut: Button
-    lateinit var buttonEasy: Button
-    lateinit var buttonHard: Button
-    lateinit var buttonP1vsP2: Button
-    lateinit var buttonLogin: Button
-    lateinit var buttonRegister: Button
-    lateinit var user: User
+    private lateinit var mGoogleSignInClient: GoogleSignInClient
+    private lateinit var buttonSignIn: SignInButton
+    private lateinit var settingsImageButton: ImageButton
+    private lateinit var buttonSignOut: Button
+    private lateinit var buttonEasy: Button
+    private lateinit var buttonHard: Button
+    private lateinit var buttonP1vsP2: Button
+    private lateinit var buttonLogin: Button
+    private lateinit var buttonRegister: Button
+    private lateinit var user: User
 
     private var launchLoginActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonP1vsP2.setOnClickListener(this)
         buttonLogin = findViewById(R.id.login)
         buttonLogin.setOnClickListener(this)
-        buttonRegister = findViewById(R.id.Register)
+        buttonRegister = findViewById(R.id.register)
         buttonRegister.setOnClickListener(this)
         settingsImageButton = findViewById(R.id.settingsButton)
         settingsImageButton.setOnClickListener(this)
@@ -125,18 +125,34 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
     }
 
-    override fun onClick(v: View) {
+    override fun onClick(view: View) {
         val intentLogin = Intent(this@MainActivity, LoginRegisterActivity::class.java)
-        when (v.id) {
+        val intentGame = Intent(this@MainActivity, GameActivity::class.java)
+        when (view.id) {
             R.id.sign_in_button -> googleSignIn()
             R.id.signout -> signOut()
             R.id.login -> {
                 intentLogin.putExtra("mode", "login")
                 getLoginRegisterResult.launch(intentLogin)
             }
-            R.id.Register -> {
+            R.id.register -> {
                 intentLogin.putExtra("mode", "register")
                 getLoginRegisterResult.launch(intentLogin)
+            }
+            R.id.easy -> {
+                intentGame.putExtra("user", user)
+                intentGame.putExtra("mode", "easy")
+                startActivity(intentGame)
+            }
+            R.id.hard -> {
+                intentGame.putExtra("user", user)
+                intentGame.putExtra("mode", "hard")
+                startActivity(intentGame)
+            }
+            R.id.p1vsp2 -> {
+                intentGame.putExtra("user", user)
+                intentGame.putExtra("mode", "p1vsp2")
+                startActivity(intentGame)
             }
         }
     }
