@@ -33,5 +33,5 @@ class User : Serializable {
         hardLose = 0
     }
 
-    constructor() {}
+    constructor()
 }

@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TicTacToe">
         <activity
+            android:name=".GameActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginRegisterActivity"
             android:exported="false" />
         <activity

@@ -1,17 +1,14 @@
 package com.example.tictactoe
 
-import androidx.appcompat.app.AppCompatActivity
+
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import android.content.Intent
-
-
-
+import androidx.appcompat.app.AppCompatActivity
 
 class LoginRegisterActivity : AppCompatActivity() {
     lateinit var mode: String
@@ -22,7 +19,6 @@ class LoginRegisterActivity : AppCompatActivity() {
     lateinit var editPassword: EditText
     lateinit var editRepeatPassword: EditText
     lateinit var textUsername: TextView
-    lateinit var textRepeatPassword: TextView
     lateinit var textTitle: TextView
     lateinit var buttonSubmit: Button
     lateinit var user: User
@@ -44,13 +40,11 @@ class LoginRegisterActivity : AppCompatActivity() {
         editPassword = findViewById(R.id.editPassword)
         editRepeatPassword = findViewById(R.id.editRepeatPassword)
         textUsername = findViewById(R.id.username)
-        //textRepeatPassword = findViewById(R.id.repeatPassword)
         textTitle = findViewById(R.id.title)
         buttonSubmit = findViewById(R.id.submit)
 
         if (mode == "login") {
             textUsername.visibility = View.INVISIBLE
-            //textRepeatPassword.visibility = View.INVISIBLE
             editUsername.visibility = View.INVISIBLE
             editRepeatPassword.visibility = View.INVISIBLE
             textTitle.text = getString(R.string.login)
@@ -87,8 +81,6 @@ class LoginRegisterActivity : AppCompatActivity() {
                     else if (editPassword.text.toString() != user.password)
                         Toast.makeText(this@LoginRegisterActivity, "Wrong password", Toast.LENGTH_LONG).show()
                     else {
-                        // successful login
-                        // send user info back to mainpage and change buttons...
                         loginUser()
                     }
                 }
@@ -117,13 +109,5 @@ class LoginRegisterActivity : AppCompatActivity() {
         setResult(RESULT_OK, data)
         finish()
     }
-    /*override fun onContextItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                return true
-            }
-        }
-        return super.onContextItemSelected(item)
-    }*/
+
 }

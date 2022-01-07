@@ -1,14 +1,13 @@
 package com.example.tictactoe
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.content.Intent
 import android.widget.Button
 import android.widget.ImageButton
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -18,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.SignInButton
-import com.google.android.gms.tasks.OnCompleteListener
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
