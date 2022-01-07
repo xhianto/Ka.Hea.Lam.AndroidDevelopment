@@ -4,8 +4,9 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.content.Intent
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -22,7 +23,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var buttonSignIn: SignInButton
-    private lateinit var settingsImageButton: ImageButton
     private lateinit var buttonSignOut: Button
     private lateinit var buttonEasy: Button
     private lateinit var buttonHard: Button
@@ -66,9 +66,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonLogin.setOnClickListener(this)
         buttonRegister = findViewById(R.id.register)
         buttonRegister.setOnClickListener(this)
-        settingsImageButton = findViewById(R.id.settingsButton)
-        settingsImageButton.setOnClickListener(this)
-
+        user = User()
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -78,6 +76,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
     }
 
     /*override fun onStart() {
@@ -128,6 +131,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View) {
         val intentLogin = Intent(this@MainActivity, LoginRegisterActivity::class.java)
         val intentGame = Intent(this@MainActivity, GameActivity::class.java)
+        intentGame.putExtra("user", user)
+
         when (view.id) {
             R.id.sign_in_button -> googleSignIn()
             R.id.signout -> signOut()
@@ -140,17 +145,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 getLoginRegisterResult.launch(intentLogin)
             }
             R.id.easy -> {
-                intentGame.putExtra("user", user)
                 intentGame.putExtra("mode", "easy")
                 startActivity(intentGame)
             }
             R.id.hard -> {
-                intentGame.putExtra("user", user)
                 intentGame.putExtra("mode", "hard")
                 startActivity(intentGame)
             }
             R.id.p1vsp2 -> {
-                intentGame.putExtra("user", user)
                 intentGame.putExtra("mode", "p1vsp2")
                 startActivity(intentGame)
             }
@@ -163,7 +165,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonHard.visibility = View.VISIBLE
         buttonP1vsP2.visibility = View.VISIBLE
         buttonSignOut.visibility = View.VISIBLE
-        settingsImageButton.visibility = View.VISIBLE
     }
 
     private fun signInOutButtons() {
@@ -172,7 +173,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         buttonHard.visibility = View.INVISIBLE
         buttonP1vsP2.visibility = View.INVISIBLE
         buttonSignOut.visibility = View.INVISIBLE
-        settingsImageButton.visibility = View.INVISIBLE
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.settings) {
+            val intentSettings = Intent(this@MainActivity, SettingsActivity::class.java)
+            if (user.emailAddress != null)
+                intentSettings.putExtra("user", user)
+            startActivity(intentSettings)
+        }
+        return true
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.tictactoe
 
-
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -22,6 +21,7 @@ class LoginRegisterActivity : AppCompatActivity() {
     private lateinit var textTitle: TextView
     private lateinit var buttonSubmit: Button
     private lateinit var user: User
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
