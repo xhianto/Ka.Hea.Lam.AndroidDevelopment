@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var buttonLogin: Button
     private lateinit var buttonRegister: Button
     private lateinit var user: User
+    private lateinit var dataBaseService: DataBaseService
 
     private var launchLoginActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -51,6 +52,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        dataBaseService = DataBaseService(this@MainActivity)
 
         buttonSignIn = findViewById(R.id.sign_in_button)
         buttonSignIn.setOnClickListener(this)
@@ -92,6 +95,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         signIn()
     }*/
 
+    override fun onResume() {
+        super.onResume()
+        if (user.emailAddress != null)
+            dataBaseService.getUserByEmail(user.emailAddress.toString())
+    }
+
     private fun googleSignIn() {
         val signInIntent = mGoogleSignInClient.signInIntent
         launchLoginActivity.launch(signInIntent)
@@ -100,8 +109,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
-            val dbService = DataBaseService(this@MainActivity)
-            user = dbService.getUserByEmail(account.email.toString())
+
+            user = dataBaseService.getUserByEmail(account.email.toString())
             if (user.emailAddress == null) {
                 val intentLogin = Intent(this@MainActivity, LoginRegisterActivity::class.java)
                 intentLogin.putExtra("mode", "googleRegister")
@@ -146,15 +155,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.easy -> {
                 intentGame.putExtra("mode", "easy")
-                startActivity(intentGame)
+                getLoginRegisterResult.launch(intentGame)
             }
             R.id.hard -> {
                 intentGame.putExtra("mode", "hard")
-                startActivity(intentGame)
+                getLoginRegisterResult.launch(intentGame)
             }
             R.id.p1vsp2 -> {
                 intentGame.putExtra("mode", "p1vsp2")
-                startActivity(intentGame)
+                getLoginRegisterResult.launch(intentGame)
             }
         }
     }
@@ -180,7 +189,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             val intentSettings = Intent(this@MainActivity, SettingsActivity::class.java)
             if (user.emailAddress != null)
                 intentSettings.putExtra("user", user)
-            startActivity(intentSettings)
+            getLoginRegisterResult.launch(intentSettings)
         }
         return true
     }

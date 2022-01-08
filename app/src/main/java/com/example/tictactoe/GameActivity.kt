@@ -1,6 +1,7 @@
 package com.example.tictactoe
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -432,5 +433,13 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        val data = Intent()
+        data.putExtra("user", user)
+        setResult(RESULT_OK, data)
+        finish()
     }
 }

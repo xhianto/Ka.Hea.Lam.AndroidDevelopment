@@ -14,9 +14,10 @@ class DataBaseService(context: Context?) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+
     fun addUser(user: User) {
         val db = this.readableDatabase
-        val cv = makeCVWithoutId(user)
+        val cv: ContentValues = makeCVWithoutId(user)
         db.insert(USER_TABLE, null, cv)
         db.close()
     }
@@ -48,15 +49,10 @@ class DataBaseService(context: Context?) :
     }
 
     fun updateUser(user: User) {
-        val db = this.writableDatabase
-        val cv = makeCVWithoutId(user)
+        val db: SQLiteDatabase = this.writableDatabase
+        val cv: ContentValues = makeCVWithoutId(user)
         cv.put(COLUMN_ID, user.userId)
-        db.update(
-            USER_TABLE,
-            cv,
-            COLUMN_ID + " = ?",
-            arrayOf(java.lang.String.valueOf(user.userId))
-        )
+        db.update(USER_TABLE, cv, "$COLUMN_ID = ?", arrayOf(java.lang.String.valueOf(user.userId)))
         db.close()
     }
 
