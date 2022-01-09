@@ -1,5 +1,8 @@
 package com.example.tictactoe
 
+// Shad Sluiter (freeCodeCamp.org), SQLite Database for Android - Full Course
+// https://www.youtube.com/watch?v=312RhjfetP8&ab_channel=freeCodeCamp.org
+// Geraadpleegd op 4 jan 2022
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

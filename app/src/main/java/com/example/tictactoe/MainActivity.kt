@@ -19,6 +19,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
 
+// Grote gedeelte van MainActivity heeft te maken met google sign in, google zelf heeft daar een tutorial voor
+// Schrijver is onbekend
+// https://developers.google.com/identity/sign-in/android/start-integrating
+// Geraadpleegd op 3 jan 2022
+
+// Data doorsturen naar andere Activity heb ik eerst op de "oude" manier gedaan, daarna veranderd naar nieuwe manier
+// user914425, How do I pass data between Activities in Android application?
+// https://stackoverflow.com/a/7325248
+// Geraadpleegd op 3 jan 2022
+
+// Data doorsturen van een child Activity naar een parent activity heb ik van, dit is weer "oude" manier, daarna veranderd naar nieuww manier
+// Paresh Mayani, How to get back the result from Child activity to Parent in android?
+// https://stackoverflow.com/a/10582579
+// Geraadpleegd op 6 jan 2022
 class MainActivity : AppCompatActivity(), OnFragmentDataPass {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
@@ -30,6 +44,10 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
     private val loginFragment = LoginFragment()
     private val loggedInFragment = LoggedInFragment()
 
+    // Nieuwe manier van ActivityResult
+    // Muntashir Akon, OnActivityResult method is deprecated, what is the alternative?
+    // https://stackoverflow.com/a/63654043
+    // Geraadpleegd op 3 jan 2022
     private var launchLoginActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
@@ -110,11 +128,7 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
 
     private fun signOut() {
         signInOutButtons()
-        Toast.makeText(
-            this@MainActivity,
-            R.string.message_successful_sign_out,
-            Toast.LENGTH_LONG
-        ).show()
+        Toast.makeText(this@MainActivity, R.string.message_successful_sign_out, Toast.LENGTH_LONG).show()
     }
 
     override fun onFragmentDataPass(action: String) {
@@ -148,6 +162,9 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
         }
     }
 
+    // Harlo Holmes, Passing data between a fragment and its container activity
+    // https://stackoverflow.com/a/9977370
+    // Geraadpleegd op 9 jan 2022
     private fun gameButtons() {
         imageButtonSettings.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction().apply {

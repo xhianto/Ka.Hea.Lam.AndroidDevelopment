@@ -7,6 +7,9 @@ import android.view.View
 import android.widget.Button
 import com.google.android.gms.common.SignInButton
 
+// Philipp Lackner, FRAGMENTS - Android Fundamentals
+// https://www.youtube.com/watch?v=-vAI7RSPxOA&ab_channel=PhilippLackner
+// Geraadpleegd op 6 jan
 class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
 
     private lateinit var buttonSignIn: SignInButton
@@ -39,6 +42,9 @@ class LoginFragment : Fragment(R.layout.fragment_login), View.OnClickListener {
         }
     }
 
+    // Harlo Holmes, Passing data between a fragment and its container activity
+    // https://stackoverflow.com/a/9977370
+    // Geraadpleegd op 9 jan 2022
     private fun fragmentDataPass(action: String) {
         dataPasser.onFragmentDataPass(action)
     }

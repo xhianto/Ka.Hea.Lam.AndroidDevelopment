@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
 
-
+// Philipp Lackner, FRAGMENTS - Android Fundamentals
+// https://www.youtube.com/watch?v=-vAI7RSPxOA&ab_channel=PhilippLackner
+// Geraadpleegd op 6 jan
 class LoggedInFragment : Fragment(R.layout.fragment_logged_in), View.OnClickListener {
 
     private lateinit var dataPasser: OnFragmentDataPass
@@ -33,6 +35,7 @@ class LoggedInFragment : Fragment(R.layout.fragment_logged_in), View.OnClickList
         buttonP1vsP2.setOnClickListener(this)
     }
 
+
     override fun onClick(view: View) {
         when (view.id) {
             R.id.signOut -> fragmentDataPass("signOut")
@@ -42,6 +45,9 @@ class LoggedInFragment : Fragment(R.layout.fragment_logged_in), View.OnClickList
         }
     }
 
+    // Harlo Holmes, Passing data between a fragment and its container activity
+    // https://stackoverflow.com/a/9977370
+    // Geraadpleegd op 9 jan 2022
     private fun fragmentDataPass(action: String) {
         dataPasser.onFragmentDataPass(action)
     }
