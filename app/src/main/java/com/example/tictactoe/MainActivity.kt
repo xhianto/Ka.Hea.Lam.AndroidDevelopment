@@ -2,11 +2,10 @@ package com.example.tictactoe
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.View
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,20 +16,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.SignInButton
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), OnFragmentDataPass {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
-    private lateinit var buttonSignIn: SignInButton
-    private lateinit var buttonSignOut: Button
-    private lateinit var buttonEasy: Button
-    private lateinit var buttonHard: Button
-    private lateinit var buttonP1vsP2: Button
-    private lateinit var buttonLogin: Button
-    private lateinit var buttonRegister: Button
+    private lateinit var fragment: FrameLayout
     private lateinit var user: User
     private lateinit var dataBaseService: DataBaseService
+
+    val loginFragment = LoginFragment()
+    val loggedInFragment = LoggedInFragment()
 
     private var launchLoginActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -54,21 +49,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         dataBaseService = DataBaseService(this@MainActivity)
-
-        buttonSignIn = findViewById(R.id.sign_in_button)
-        buttonSignIn.setOnClickListener(this)
-        buttonSignOut = findViewById(R.id.signout)
-        buttonSignOut.setOnClickListener(this)
-        buttonEasy = findViewById(R.id.easy)
-        buttonEasy.setOnClickListener(this)
-        buttonHard = findViewById(R.id.hard)
-        buttonHard.setOnClickListener(this)
-        buttonP1vsP2 = findViewById(R.id.p1vsp2)
-        buttonP1vsP2.setOnClickListener(this)
-        buttonLogin = findViewById(R.id.login)
-        buttonLogin.setOnClickListener(this)
-        buttonRegister = findViewById(R.id.register)
-        buttonRegister.setOnClickListener(this)
+        fragment = findViewById(R.id.flFragment)
+        signInOutButtons()
         user = User()
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -85,15 +67,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         menuInflater.inflate(R.menu.menu, menu)
         return true
     }
-
-    /*override fun onStart() {
-        super.onStart()
-
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
-        GoogleSignIn.getLastSignedInAccount(this)
-        signIn()
-    }*/
 
     override fun onResume() {
         super.onResume()
@@ -124,8 +97,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            //Log.w(TAG, "signInResult:failed code=" + e.statusCode)
-            //updateUI(null)
+            Toast.makeText(this@MainActivity, "SignInResult:failed code=" + e.statusCode, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -137,31 +109,31 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
     }
 
-    override fun onClick(view: View) {
+    override fun onFragmentDataPass(action: String) {
         val intentLogin = Intent(this@MainActivity, LoginRegisterActivity::class.java)
         val intentGame = Intent(this@MainActivity, GameActivity::class.java)
         intentGame.putExtra("user", user)
 
-        when (view.id) {
-            R.id.sign_in_button -> googleSignIn()
-            R.id.signout -> signOut()
-            R.id.login -> {
+        when (action) {
+            "google"-> googleSignIn()
+            "signOut" -> signOut()
+            "login" -> {
                 intentLogin.putExtra("mode", "login")
                 getLoginRegisterResult.launch(intentLogin)
             }
-            R.id.register -> {
+            "register" -> {
                 intentLogin.putExtra("mode", "register")
                 getLoginRegisterResult.launch(intentLogin)
             }
-            R.id.easy -> {
+            "easy" -> {
                 intentGame.putExtra("mode", "easy")
                 getLoginRegisterResult.launch(intentGame)
             }
-            R.id.hard -> {
+            "hard" -> {
                 intentGame.putExtra("mode", "hard")
                 getLoginRegisterResult.launch(intentGame)
             }
-            R.id.p1vsp2 -> {
+            "p1vsp2" -> {
                 intentGame.putExtra("mode", "p1vsp2")
                 getLoginRegisterResult.launch(intentGame)
             }
@@ -169,19 +141,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun gameButtons() {
-        buttonSignIn.visibility = View.INVISIBLE
-        buttonEasy.visibility = View.VISIBLE
-        buttonHard.visibility = View.VISIBLE
-        buttonP1vsP2.visibility = View.VISIBLE
-        buttonSignOut.visibility = View.VISIBLE
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment, loggedInFragment)
+            commit()
+        }
     }
 
     private fun signInOutButtons() {
-        buttonSignIn.visibility = View.VISIBLE
-        buttonEasy.visibility = View.INVISIBLE
-        buttonHard.visibility = View.INVISIBLE
-        buttonP1vsP2.visibility = View.INVISIBLE
-        buttonSignOut.visibility = View.INVISIBLE
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.flFragment, loginFragment)
+            commit()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -193,4 +163,5 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
         return true
     }
+
 }

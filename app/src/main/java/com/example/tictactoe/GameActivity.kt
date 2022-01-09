@@ -436,7 +436,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         val data = Intent()
         data.putExtra("user", user)
         setResult(RESULT_OK, data)

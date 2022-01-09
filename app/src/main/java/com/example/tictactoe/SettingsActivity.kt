@@ -138,7 +138,6 @@ class SettingsActivity : AppCompatActivity() {
         changeNameDialog.setTitle("Change your username")
         val input = EditText(this)
         changeNameDialog.setView(input)
-        // Set up the buttons
         changeNameDialog.setButton(
             AlertDialog.BUTTON_POSITIVE, "Change"
         ) { dialog, _ ->
@@ -159,7 +158,6 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        //super.onBackPressed()
         val data = Intent()
         data.putExtra("user", user)
         setResult(RESULT_OK, data)
