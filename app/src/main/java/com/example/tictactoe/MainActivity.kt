@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Toast.makeText(this@MainActivity, "SignInResult:failed code=" + e.statusCode, Toast.LENGTH_LONG).show()
+            Toast.makeText(this@MainActivity, R.string.error_google_sign_in + e.statusCode, Toast.LENGTH_LONG).show()
         }
     }
 
@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this) {
                 signInOutButtons()
-                Toast.makeText(this@MainActivity, "Signed Out Successfully", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@MainActivity, R.string.message_successful_sign_out, Toast.LENGTH_LONG).show()
             }
     }
 

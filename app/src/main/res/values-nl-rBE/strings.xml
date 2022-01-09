@@ -3,12 +3,12 @@
     <string name="easy">Gemakkelijk</string>
     <string name="hard">Moeilijk</string>
     <string name="sign_out">Uitloggen</string>
-    <string name="draw">Gelijkspel</string>
+    <string name="draw">Gelijk</string>
     <string name="friend">Vriend</string>
     <string name="total">Totaal</string>
-    <string name="win">Gewonnen</string>
-    <string name="lose">Verloren</string>
-    <string name="win_percentage">Gewonnen %</string>
+    <string name="win">Winst</string>
+    <string name="lose">Verlies</string>
+    <string name="win_percentage">Winst %</string>
     <string name="statistics">Statistieken</string>
     <string name="settings">Instellingen</string>
     <string name="change_user_name">Verander gebruikersnaam</string>
@@ -18,5 +18,15 @@
     <string name="password">Wachtwoord:</string>
     <string name="game_frame">Spel kader</string>
     <string name="android_development">Deze app als opdracht van Android Development cursus</string>
-    <string name="reset">Nog een keer</string>
+    <string name="reset">Herstart</string>
+    <string name="error_username_empty">Gebruikersnaam mag niet leeg zijn</string>
+    <string name="error_email_empty">Email mag niet leeg zijn</string>
+    <string name="error_password_empty">Wachtwoord mag niet leeg zijn</string>
+    <string name="error_repeat_password_empty">Herhaal wachtwoord mag niet leeg zijn</string>
+    <string name="error_user_not_found">Gebruiker niet gevonden</string>
+    <string name="error_wrong_password">Verkeerde wachtwoord</string>
+    <string name="error_email_in_use">Email is al in gebruik</string>
+    <string name="message_new_user">Nieuwe gebruiker toegevoegd</string>
+    <string name="message_successful_sign_out">Succesvol uitgelogd</string>
+    <string name="error_google_sign_in">LoginResultaat: gefaald code=</string>
 </resources>
