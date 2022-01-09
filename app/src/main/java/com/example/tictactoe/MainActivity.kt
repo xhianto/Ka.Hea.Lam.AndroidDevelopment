@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,11 +23,12 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
 
     private lateinit var mGoogleSignInClient: GoogleSignInClient
     private lateinit var fragment: FrameLayout
+    private lateinit var imageButtonSettings: ImageButton
     private lateinit var user: User
     private lateinit var dataBaseService: DataBaseService
 
-    val loginFragment = LoginFragment()
-    val loggedInFragment = LoggedInFragment()
+    private val loginFragment = LoginFragment()
+    private val loggedInFragment = LoggedInFragment()
 
     private var launchLoginActivity = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -50,6 +53,7 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
 
         dataBaseService = DataBaseService(this@MainActivity)
         fragment = findViewById(R.id.flFragment)
+        imageButtonSettings = findViewById(R.id.settingsButton)
         signInOutButtons()
         user = User()
 
@@ -61,17 +65,18 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
 
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu, menu)
-        return true
+        imageButtonSettings.setOnClickListener {
+            val intentSettings = Intent(this@MainActivity, SettingsActivity::class.java)
+            intentSettings.putExtra("user", user)
+            getLoginRegisterResult.launch(intentSettings)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         if (user.emailAddress != null)
-            dataBaseService.getUserByEmail(user.emailAddress.toString())
+            user = dataBaseService.getUserByEmail(user.emailAddress.toString())
     }
 
     private fun googleSignIn() {
@@ -91,10 +96,12 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
                 intentLogin.putExtra("email", account.email)
                 getLoginRegisterResult.launch(intentLogin)
             }
-            gameButtons()
             // Signed in successfully, show authenticated UI.
-            //updateUI(account)
-        } catch (e: ApiException) {
+            mGoogleSignInClient.signOut()
+            gameButtons()
+
+        }
+        catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Toast.makeText(this@MainActivity, R.string.error_google_sign_in + e.statusCode, Toast.LENGTH_LONG).show()
@@ -102,11 +109,12 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
     }
 
     private fun signOut() {
-        mGoogleSignInClient.signOut()
-            .addOnCompleteListener(this) {
-                signInOutButtons()
-                Toast.makeText(this@MainActivity, R.string.message_successful_sign_out, Toast.LENGTH_LONG).show()
-            }
+        signInOutButtons()
+        Toast.makeText(
+            this@MainActivity,
+            R.string.message_successful_sign_out,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     override fun onFragmentDataPass(action: String) {
@@ -141,6 +149,7 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
     }
 
     private fun gameButtons() {
+        imageButtonSettings.visibility = View.VISIBLE
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, loggedInFragment)
             commit()
@@ -148,20 +157,10 @@ class MainActivity : AppCompatActivity(), OnFragmentDataPass {
     }
 
     private fun signInOutButtons() {
+        imageButtonSettings.visibility = View.INVISIBLE
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.flFragment, loginFragment)
             commit()
         }
     }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.settings) {
-            val intentSettings = Intent(this@MainActivity, SettingsActivity::class.java)
-            if (user.emailAddress != null)
-                intentSettings.putExtra("user", user)
-            getLoginRegisterResult.launch(intentSettings)
-        }
-        return true
-    }
-
 }

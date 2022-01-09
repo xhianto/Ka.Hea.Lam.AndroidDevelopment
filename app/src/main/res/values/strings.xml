@@ -10,7 +10,7 @@
     <string name="total">Total</string>
     <string name="win">Win</string>
     <string name="lose">Lose</string>
-    <string name="win_percentage">Win %</string>
+    <string name="win_percentage">Win%</string>
     <string name="statistics">Statistics</string>
     <string name="settings">Settings</string>
     <string name="change_user_name">Change username</string>
