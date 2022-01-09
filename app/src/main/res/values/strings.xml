@@ -1,11 +1,8 @@
 <resources>
-    <string name="app_name">TicTacToe</string>
-    <string name="no_login">No Login</string>
-
-    <string name="login_notice">Log to play</string>
+    <string name="app_name" translatable="false">TicTacToe</string>
     <string name="easy">Easy</string>
     <string name="hard">Hard</string>
-    <string name="p1vsp2">P1 vs P2</string>
+    <string name="p1vsp2" translatable="false">P1 vs P2</string>
     <string name="sign_out">Sign Out</string>
     <string name="reset">Reset</string>
     <string name="draw">Draw</string>
@@ -18,19 +15,21 @@
     <string name="settings">Settings</string>
     <string name="change_user_name">Change username</string>
     <string name="user_name">User Name:</string>
-    <string name="email">Email:</string>
+    <string name="email" translatable="false">Email:</string>
     <string name="login">Log In</string>
     <string name="register">Register</string>
     <string name="password">Password:</string>
     <string name="game_frame">Game Frame</string>
-    <string name="pos00">Pos00</string>
-    <string name="pos01">Pos01</string>
-    <string name="pos02">Pos02</string>
-    <string name="pos10">Pos10</string>
-    <string name="pos11">Pos11</string>
-    <string name="pos12">Pos12</string>
-    <string name="pos20">Pos20</string>
-    <string name="pos21">Pos21</string>
-    <string name="pos22">Pos22</string>
+    <string name="pos00" translatable="false">Pos00</string>
+    <string name="pos01" translatable="false">Pos01</string>
+    <string name="pos02" translatable="false">Pos02</string>
+    <string name="pos10" translatable="false">Pos10</string>
+    <string name="pos11" translatable="false">Pos11</string>
+    <string name="pos12" translatable="false">Pos12</string>
+    <string name="pos20" translatable="false">Pos20</string>
+    <string name="pos21" translatable="false">Pos21</string>
+    <string name="pos22" translatable="false">Pos22</string>
     <string name="android_development">This app is created for Android Development Course</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

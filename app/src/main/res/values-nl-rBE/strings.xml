@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="easy">Gemakkelijk</string>
+    <string name="hard">Moeilijk</string>
+    <string name="sign_out">Uitloggen</string>
+    <string name="draw">Gelijkspel</string>
+    <string name="friend">Vriend</string>
+    <string name="total">Totaal</string>
+    <string name="win">Gewonnen</string>
+    <string name="lose">Verloren</string>
+    <string name="win_percentage">Gewonnen %</string>
+    <string name="statistics">Statistieken</string>
+    <string name="settings">Instellingen</string>
+    <string name="change_user_name">Verander gebruikersnaam</string>
+    <string name="user_name">Gebruikersnaam:</string>
+    <string name="login">Inloggen</string>
+    <string name="register">Registreren</string>
+    <string name="password">Wachtwoord:</string>
+    <string name="game_frame">Spel kader</string>
+    <string name="android_development">Deze app als opdracht van Android Development cursus</string>
+    <string name="reset">Nog een keer</string>
+</resources>
